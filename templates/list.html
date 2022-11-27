@@ -1,0 +1,48 @@
+{% extends "layout.html" %}
+{% block y %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            {% include "menu.html" %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <h1>{{judul}}</h1>
+            <p style="text-align: right;">
+                <a href="{{url_for(method_tambah)}}" class="btn btn-primary">Tambah</a>
+            </p>
+            {% if error %}
+            <div class="alert alert-danger" role="alert">
+                {{ error }}
+            </div>
+            {% endif %}
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        {% for column in columns %}
+                        <th>{{column['label']}}</th>
+                        {% endfor %}
+                        <th>Aksi</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in data %}
+                        <tr>
+                            <td>{{loop.index}}</td>
+                            {% for column in columns %}
+                            <td>{{item[column['name']]}}</td>
+                            {% endfor %}
+                            <td>
+                                <a class="btn btn-info" href="{{url_for(method_edit, id=item['id'])}}">Edit</a>
+                                <a class="btn btn-danger" href="{{url_for(method_hapus, id=item['id'])}}">Hapus</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

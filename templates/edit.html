@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+{% block y %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            {% include "menu.html" %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <h1>{{judul}}</h1>
+            {% if error %}
+                <div class="alert alert-danger" role="alert">
+                    {{ error }}
+                </div>
+            {% endif %}
+            <form action="{{ form['action'] }}" method="post">
+                {% for input in form['inputs'] %}
+                <div class="form-group">
+                    <label for="{{input['_name']}}">{{input['_text']}}</label>
+                    <input type="{{input['_type']}}" name="{{input['_name']}}" id="{{input['_name']}}" class="form-control" placeholder="{{input['_text']}}" value="{{data[input['_name']]}}" required>
+                </div>
+                {% endfor %}
+                <button type="submit" name="submit" class="btn btn-primary">Simpan</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
