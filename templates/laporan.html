@@ -24,27 +24,29 @@
                         <th>Catatan</th>
                         <th>Saldo</th>
                     </tr>
-                    </thead>
-                    <tbody>
-                        {% set saldo = 0 %}
-                        {% for item in data %}
-                        <tr>
-                            <td>{{item['tanggal']}}</td>
-                            {% if item['penerimaan'] %}
-                            {% set saldo = saldo + item['jumlah'] %}
-                            <td>{{ 'Rp{:0,.2f}'.format(item['jumlah']).replace(',', '@').replace('.', ',').replace('@', '.') }}</td>
-                            {% endif %}
-                            <td></td>
-                            {% if not item['penerimaan'] %}
-                            {% set saldo = saldo + item['jumlah'] %}
-                            <td>{{ 'Rp{:0,.2f}'.format(item['jumlah']).replace(',', '@').replace('.', ',').replace('@', '.') }}</td>
-                            {% endif %}
-                            <td>{{item['keterangan']}}</td>
-                            <td>{{item['catatan']}}</td>
-                            <td>{{ 'Rp{:0,.2f}'.format(saldo).replace(',', '@').replace('.', ',').replace('@', '.') }}</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
+                </thead>
+                <tbody>
+                    {% set vars = namespace(saldo=0) %}
+                    {% for item in data %}
+                    <tr>
+                        <td>{{item['tanggal']}}</td>
+                        {% if item['penerimaan'] %}
+                        {% set vars.saldo = vars.saldo + item['jumlah'] %}
+                        <td>{{ 'Rp{:0,.2f}'.format(item['jumlah']).replace(',', '@').replace('.', ',').replace('@', '.')
+                            }}</td>
+                        {% endif %}
+                        <td></td>
+                        {% if not item['penerimaan'] %}
+                        {% set vars.saldo = vars.saldo - item['jumlah'] %}
+                        <td>{{ 'Rp{:0,.2f}'.format(item['jumlah']).replace(',', '@').replace('.', ',').replace('@', '.')
+                            }}</td>
+                        {% endif %}
+                        <td>{{item['keterangan']}}</td>
+                        <td>{{item['catatan']}}</td>
+                        <td>{{ 'Rp{:0,.2f}'.format(vars.saldo).replace(',', '@').replace('.', ',').replace('@', '.') }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
             </table>
         </div>
     </div>
@@ -58,13 +60,13 @@
 <script src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.html5.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.print.min.js"></script>
 <script>
-    $(document).ready(function() {
-    $('#laporan').DataTable( {
-        dom: 'Brt',
-        buttons: [
-            'excel'
-        ]
-    } );
-} );
+    $(document).ready(function () {
+        $('#laporan').DataTable({
+            dom: 'Brt',
+            buttons: [
+                'excel'
+            ]
+        });
+    });
 </script>
 {% endblock %}
